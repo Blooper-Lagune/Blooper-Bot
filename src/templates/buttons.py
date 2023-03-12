@@ -37,5 +37,6 @@ class ButtonTicket(nextcord.ui.View):
 
         ticket_channel = await ctx.guild.create_text_channel(name=f"ticket-{ctx.user.name}", category=ticket_category)
         await ticket_channel.set_permissions(target=ctx.guild.default_role, view_channel=False)
+        await ticket_channel.set_permissions(target=ctx.user, view_channel=True)
 
         await ticket_channel.send(f"{ctx.user.mention}, wie können wir dir helfen?")
