@@ -31,7 +31,7 @@ class TicketSetup(commands.Cog):
             bot=self.bot,
             ctx=ctx,
             description="",
-            color=nextcord.Color.red()
+            color=nextcord.Color.from_rgb(r=255, g=50, b=53)
         )
         embed_image.title = ""
         embed_image.set_footer(text="")
@@ -42,7 +42,7 @@ class TicketSetup(commands.Cog):
             bot=self.bot,
             ctx=ctx,
             description=text["main"],
-            color=nextcord.Color.dark_red()
+            color=nextcord.Color.from_rgb(r=255, g=50, b=53)
         )
         embed_rules.add_field(
             name=":faq: 〣Stelle eine Frage...",
@@ -72,7 +72,7 @@ class TicketSetup(commands.Cog):
             bot=self.bot,
             ctx=ctx,
             description="Du möchtest ein Ticket Erstellen? Bitte klicke auf den Button.",
-            color=nextcord.Color.dark_red()
+            color=nextcord.Color.from_rgb(r=255, g=50, b=53)
         )
         embed_ticket_setup.set_author(name="")
         embed_ticket_setup.title = ""
@@ -80,7 +80,6 @@ class TicketSetup(commands.Cog):
 
         button_setup = buttons.ButtonTicket()
         await ctx.send(embeds=[embed_image, embed_rules, embed_ticket_setup], view=button_setup)
-        # ff3235
 
 
 def setup(bot):
