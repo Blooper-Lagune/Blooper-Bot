@@ -8,7 +8,7 @@ class Ping(commands.Cog):
         self.bot = bot
 
     @nextcord.slash_command(
-        name="b-ping",
+        name="ping",
         description="Zeigt den Ping des Bots an.",
         force_global=True
     )
