@@ -83,7 +83,7 @@ class ButtonTicket(nextcord.ui.View):
         self.bot = bot
         super().__init__()
 
-    @nextcord.ui.button(label="Ticket erstellen", style=nextcord.ButtonStyle.green)
+    @nextcord.ui.button(label="Ticket erstellen", style=nextcord.ButtonStyle.green, emoji="📩")
     async def button(
             self,
             button: nextcord.Button,
@@ -148,7 +148,7 @@ class TicketDelete(nextcord.ui.View):
         self.ticket_channel = ticket
         super().__init__()
 
-    @nextcord.ui.button(label=f"Ticket schließen", style=nextcord.ButtonStyle.red)
+    @nextcord.ui.button(label=f"Ticket schließen", style=nextcord.ButtonStyle.red, emoji="🔒")
     async def button_log(
             self,
             button: nextcord.Button,
