@@ -35,7 +35,8 @@ class TicketCloseMenu(nextcord.ui.View):
 
         self.button_log = nextcord.ui.Button(
             label="Dokument speichern",
-            style=nextcord.ButtonStyle.gray
+            style=nextcord.ButtonStyle.gray,
+            emoji="bookmark_tabs"
         )
         self.button_log.callback = log_callback
 
@@ -52,7 +53,7 @@ class TicketCloseMenu(nextcord.ui.View):
             await ctx.channel.delete()
 
         self.button_delete = nextcord.ui.Button(
-            label="Ticket löschen",
+            label="⛔ Ticket löschen",
             style=nextcord.ButtonStyle.red
         )
         self.button_delete.callback = callback_delete

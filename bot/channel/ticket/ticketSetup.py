@@ -71,22 +71,11 @@ class TicketSetup(commands.Cog):
         embed_rules.remove_author()
         embed_rules.set_thumbnail(url="")
 
-        embed_ticket_setup = embeds.EmbedNormal(
-            bot=self.bot,
-            ctx=ctx,
-            description="Du möchtest ein Ticket Erstellen? Bitte klicke auf den Button.",
-            color=nextcord.Color.from_rgb(r=255, g=50, b=53)
-        )
-        embed_ticket_setup.title = ""
-        embed_ticket_setup.remove_footer()
-        embed_ticket_setup.remove_author()
-        embed_ticket_setup.set_thumbnail(url="")
-
         button_setup = ButtonTicket(
             bot=self.bot
         )
 
-        await ctx.send(embeds=[embed_image, embed_rules, embed_ticket_setup], view=button_setup)
+        await ctx.send(embeds=[embed_image, embed_rules], view=button_setup)
 
 
 class ButtonTicket(nextcord.ui.View):
@@ -94,7 +83,7 @@ class ButtonTicket(nextcord.ui.View):
         self.bot = bot
         super().__init__()
 
-    @nextcord.ui.button(label="Ticket Erstellen", style=nextcord.ButtonStyle.green)
+    @nextcord.ui.button(label="Ticket erstellen", style=nextcord.ButtonStyle.green)
     async def button(
             self,
             button: nextcord.Button,
@@ -128,22 +117,22 @@ class ButtonTicket(nextcord.ui.View):
         await ticket_channel.set_permissions(target=ctx.guild.default_role, view_channel=False)
         await ticket_channel.set_permissions(target=ctx.user, view_channel=True)
 
+        await ticket_channel.send(f"{ctx.user.mention} Willkommen im Support Bereich der Blooper Lagune! :envelope_with_arrow:")
         embed_close = embeds.EmbedNormal(
             bot=self.bot,
             ctx=ctx,
-            description="Du hast erfolgreich ein Ticket eröffnet",
+            description="Du hast erfolgreich ein Ticket eröffnet :white_check_mark:",
             color=nextcord.Color.green()
         )
         embed_close.add_field(
             name="",
-            value="Jemand aus dem Supporter-Team wird sich in kürze bie dir melden und sich um dein Anliegen kümmern.",
+            value="Jemand aus dem Supporter-Team wird sich in kürze bei dir melden und sich um dein Anliegen kümmern. :alarm_clock:",
             inline=False
         )
-        embed_close.add_field(
-            name="",
-            value="Du kannst das Ticket auch wieder schließen, sollte dein Anliegen bereits geklärt sein.",
-            inline=False
-        )
+        embed_close.remove_author()
+        embed_close.remove_footer()
+        embed_close.set_thumbnail(url="")
+        embed_close.title = ""
 
         delete_button = TicketDelete(
             bot=self.bot,
@@ -159,7 +148,7 @@ class TicketDelete(nextcord.ui.View):
         self.ticket_channel = ticket
         super().__init__()
 
-    @nextcord.ui.button(label="Ticket löschen", style=nextcord.ButtonStyle.red)
+    @nextcord.ui.button(label=f"Ticket schließen", style=nextcord.ButtonStyle.red)
     async def button_log(
             self,
             button: nextcord.Button,
@@ -183,6 +172,10 @@ class TicketDelete(nextcord.ui.View):
             description=f"{ctx.user.mention} hat das Ticket geschlossen. Wie soll es nun weiter gehen?",
             color=nextcord.Color.yellow()
         )
+        embed_close.remove_footer()
+        embed_close.remove_author()
+        embed_close.title = ""
+        embed_close.set_thumbnail(url="")
 
         button_menu = buttons.TicketCloseMenu(
             bot=self.bot,
