@@ -1,21 +1,6 @@
 import nextcord
 from nextcord.ext import commands
 import os
-from nextcord import Message
-from src.templates import embeds
-
-
-class TicketLogs(nextcord.ui.View):
-    def __init__(self):
-        super().__init__()
-
-    @nextcord.ui.button(label="Dokument speichern", style=nextcord.ButtonStyle.gray)
-    async def button_log(
-            self,
-            button: nextcord.Button,
-            ctx: nextcord.Interaction
-    ) -> None:
-        pass
 
 
 class TicketCloseMenu(nextcord.ui.View):
