@@ -105,7 +105,7 @@ class ButtonTicket(nextcord.ui.View):
         Attributes
         ----------
         :param button:
-        :param ctx:
+        :param ctx: Gives the interaction to discord
         :return: None
         ----------
         """
@@ -165,6 +165,16 @@ class TicketDelete(nextcord.ui.View):
             button: nextcord.Button,
             ctx: nextcord.Interaction
     ) -> None:
+
+        """
+        Attributes
+        ----------
+        :param button:
+        :param ctx: Gives the interaction to discord
+        :return: None
+        ----------
+        """
+
         await self.ticket_channel.set_permissions(target=ctx.user, view_channel=False)
 
         embed_close = embeds.EmbedNormal(
