@@ -18,6 +18,7 @@ class Blooper(commands.Bot):
         self.remove_command("help")
         print("Requirements loaded")
 
+        # load all cogs
         for root, dirs, files in os.walk("bot"):
             for name in files:
                 if str(root).endswith("__pycache__"):
@@ -25,6 +26,7 @@ class Blooper(commands.Bot):
 
                 self.load_extension(os.path.join(root, name).replace("/", ".")[:-3])
 
+        # run the bot
         self.run(self.__token)
 
 
