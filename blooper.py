@@ -2,6 +2,7 @@ import nextcord
 import os
 from nextcord.ext import commands
 from src.loader.jsonLoader import Token
+from database.check import Check
 
 
 class Blooper(commands.Bot):
@@ -26,5 +27,7 @@ class Blooper(commands.Bot):
 
 
 if __name__ == "__main__":
+    # check if database faultless
+    Check().inspect()
     # start the bot
     Blooper()
