@@ -7,7 +7,9 @@ from database.check import Check
 
 class Blooper(commands.Bot):
     def __init__(self):
-        super().__init__(intents=nextcord.Intents.all())
+        super().__init__(
+            intents=nextcord.Intents.all()
+        )
 
         # get the token
         self.__token = Token().get_token()
