@@ -1,42 +1,77 @@
 import nextcord
+from nextcord.ext import commands
+import os
 from nextcord import Message
+from src.templates import embeds
 
 
-class ButtonTicket(nextcord.ui.View):
+class TicketLogs(nextcord.ui.View):
     def __init__(self):
         super().__init__()
 
-    @nextcord.ui.button(label="Ticket Erstellen", style=nextcord.ButtonStyle.green)
-    async def button(
+    @nextcord.ui.button(label="Dokument speichern", style=nextcord.ButtonStyle.gray)
+    async def button_log(
             self,
             button: nextcord.Button,
             ctx: nextcord.Interaction
-    ) -> Message:
+    ) -> None:
+        pass
 
-        """
-        Attributes
-        ----------
-        :param button:
-        :param ctx:
-        :return: None
-        ----------
-        """
 
-        # get the ticket category
-        ticket_category = nextcord.utils.get(ctx.guild.categories, name="Blooper Support")
+class TicketCloseMenu(nextcord.ui.View):
+    def __init__(self, bot: commands.Bot, ctx: nextcord.Interaction, ticket: nextcord.TextChannel):
+        super().__init__()
+        self.bot = bot
+        self.ctx = ctx
+        self.ticket = ticket
 
-        if ticket_category is None:
-            ticket_category = await ctx.guild.create_category(name="Blooper Support")
+        async def log_callback(ctx: nextcord.Interaction):
+            ticket_category = nextcord.utils.get(ctx.guild.categories, name="Blooper Support")
+            log_channel = nextcord.utils.get(ticket_category.channels, name="logs")
 
-        if len(ticket_category.channels) >= 50:
-            return await ctx.user.send("Momentan sind zu viele Tickets. Bitte versuche es später erneut.")
+            if log_channel is None:
+                await ctx.guild.create_text_channel(name="logs", category=ticket_category)
+                await ticket_category.set_permissions(target=ctx.guild.default_role, view_channel=False)
 
-        ticket_check = nextcord.utils.get(ticket_category.channels, name=f"ticket-{str(ctx.user.name).lower()}")
-        if ticket_check is not None:
-            return await ctx.user.send("Du hast bereits ein aktives Ticket.")
+            messages = await ctx.channel.history(limit=10000).flatten()
+            files = [file for file in os.listdir("resources/logs")]
 
-        ticket_channel = await ctx.guild.create_text_channel(name=f"ticket-{ctx.user.name}", category=ticket_category)
-        await ticket_channel.set_permissions(target=ctx.guild.default_role, view_channel=False)
-        await ticket_channel.set_permissions(target=ctx.user, view_channel=True)
+            with open(f"resources/logs/log-{len(files) + 1}.txt", "a") as f:
+                for msg in messages:
+                    f.write(f"{msg.author}: {msg.content}\n")
+                f.close()
 
-        await ticket_channel.send(f"{ctx.user.mention}, wie können wir dir helfen?")
+            await log_channel.send(
+                f"Logs von ticket: {ctx.channel.name}",
+                file=nextcord.File(fp=f"resources/logs/log-{len(files) + 1}.txt")
+            )
+
+            os.remove(f"resources/logs/log-{len(files) + 1}.txt")
+
+        self.button_log = nextcord.ui.Button(
+            label="Dokument speichern",
+            style=nextcord.ButtonStyle.gray
+        )
+        self.button_log.callback = log_callback
+
+        async def callback_reopen(ctx: nextcord.Interaction):
+            print("Reopen")
+
+        self.button_reopen = nextcord.ui.Button(
+            label="Ticket wieder eröffnen",
+            style=nextcord.ButtonStyle.green
+        )
+        self.button_reopen.callback = callback_reopen
+
+        async def callback_delete(ctx: nextcord.Interaction):
+            await ctx.channel.delete()
+
+        self.button_delete = nextcord.ui.Button(
+            label="Ticket löschen",
+            style=nextcord.ButtonStyle.red
+        )
+        self.button_delete.callback = callback_delete
+
+        self.add_item(self.button_log)
+        self.add_item(self.button_reopen)
+        self.add_item(self.button_delete)
