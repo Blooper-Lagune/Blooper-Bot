@@ -2,7 +2,8 @@ import nextcord
 from nextcord import Message
 from nextcord.ext import commands
 from src.templates import embeds, buttons
-from src.loader.jsonLoader import Ticket
+from src.loader.jsonLoader import TicketText
+from src.settings.ticket import settings
 
 
 class TicketSetup(commands.Cog):
@@ -19,6 +20,7 @@ class TicketSetup(commands.Cog):
             self,
             ctx: nextcord.Interaction,
     ) -> None:
+
         """
         Attributes
         ----------
@@ -27,7 +29,13 @@ class TicketSetup(commands.Cog):
         ----------
         """
 
-        text = Ticket().get_ticket()
+        await settings.set_channel(
+            bot=self.bot,
+            server_id=ctx.guild.id,
+            channel_id=ctx.channel.id
+        )
+
+        text = TicketText().get_ticket()
         embed_image = embeds.EmbedNormal(
             bot=self.bot,
             ctx=ctx,
@@ -83,7 +91,11 @@ class ButtonTicket(nextcord.ui.View):
         self.bot = bot
         super().__init__()
 
-    @nextcord.ui.button(label="Ticket erstellen", style=nextcord.ButtonStyle.green, emoji="📩")
+    @nextcord.ui.button(
+        label="Ticket erstellen",
+        style=nextcord.ButtonStyle.green,
+        emoji="📩"
+    )
     async def button(
             self,
             button: nextcord.Button,
@@ -112,8 +124,7 @@ class ButtonTicket(nextcord.ui.View):
         if ticket_check is not None:
             return await ctx.user.send("Du hast bereits ein aktives Ticket.")
 
-        ticket_channel = await ctx.guild.create_text_channel(name=f"ticket-{ctx.user.name}",
-                                                             category=ticket_category)
+        ticket_channel = await ctx.guild.create_text_channel(name=f"ticket-{ctx.user.name}", category=ticket_category)
         await ticket_channel.set_permissions(target=ctx.guild.default_role, view_channel=False)
         await ticket_channel.set_permissions(target=ctx.user, view_channel=True)
 
@@ -148,7 +159,11 @@ class TicketDelete(nextcord.ui.View):
         self.ticket_channel = ticket
         super().__init__()
 
-    @nextcord.ui.button(label=f"Ticket schließen", style=nextcord.ButtonStyle.red, emoji="🔒")
+    @nextcord.ui.button(
+        label=f"Ticket schließen",
+        style=nextcord.ButtonStyle.red,
+        emoji="🔒"
+    )
     async def button_log(
             self,
             button: nextcord.Button,
