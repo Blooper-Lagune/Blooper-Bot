@@ -10,7 +10,7 @@ class Status(commands.Cog):
     @tasks.loop(seconds=30)
     async def status(self):
         await self.bot.change_presence(
-            activity=nextcord.Game("Spielt mit der Waschmaschine."),
+            activity=nextcord.Game("mit Ulti's ASMR."),
             status=nextcord.Status.do_not_disturb
         )
         await asyncio.sleep(15)
