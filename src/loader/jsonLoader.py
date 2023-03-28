@@ -11,3 +11,4 @@ class Token:
 
     def maria_db(self):
         return self.__config["mariadb"]["host"], self.__config["mariadb"]["user"], self.__config["mariadb"]["password"], self.__config["mariadb"]["database"]
+    
