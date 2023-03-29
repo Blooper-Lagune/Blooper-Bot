@@ -33,7 +33,7 @@ class SetupVoice(commands.Cog):
                 category=category
             )
             await ctx.guild.create_voice_channel(
-                name="Create Voice",
+                name="Voice erstellen",
                 category=category
             )
             return
@@ -45,10 +45,10 @@ class SetupVoice(commands.Cog):
                 category=category
             )
 
-        voice = nextcord.utils.get(category.channels, name="Create Voice")
+        voice = nextcord.utils.get(category.channels, name="Voice erstellen")
         if voice is None:
             await ctx.guild.create_voice_channel(
-                name="Create Voice",
+                name="Voice erstellen",
                 category=category
             )
         await ctx.send("Voice is ready to use.", ephemeral=True)
