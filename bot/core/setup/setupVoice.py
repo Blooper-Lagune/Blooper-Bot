@@ -13,6 +13,15 @@ class SetupVoice(commands.Cog):
         default_member_permissions=8
     )
     async def setup_voice(self, ctx: nextcord.Interaction) -> None:
+
+        """
+        Attributes
+        ----------
+        :param ctx: Give the interaction content for discord
+        :return: None
+        ----------
+        """
+
         category = nextcord.utils.get(ctx.guild.categories, name="🔊 Sprachkanäle 🔊")
 
         if category is None:
