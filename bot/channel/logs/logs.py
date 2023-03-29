@@ -12,7 +12,7 @@ class Logs(commands.Cog):
             pool_size=9
         )
 
-    async def get_channel(self, message: nextcord.Message):
+    async def get_channel(self, message: nextcord.Message) -> None | nextcord.TextChannel:
         channel = self.database.execute(
             query="SELECT channel FROM log_channel",
             data=[]
@@ -40,7 +40,7 @@ class Logs(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_edit(self, before: nextcord.Message, after: nextcord.Message):
-        channel: nextcord.TextChannel = await self.get_channel(message=before)
+        channel: nextcord.TextChannel = await self.get_channel(message=after)
 
         if not channel:
             return
@@ -52,8 +52,25 @@ class Logs(commands.Cog):
             description=""
         )
         embed_logs.title = "Neuer Log"
-        embed_logs.add_field(name=f"Nachricht bearbeitet von:", value=before.content)
+        embed_logs.add_field(name=f"Nachricht bearbeitet in {before.channel.mention} von:", value=before.content, inline=False)
         embed_logs.add_field(name="Zu:", value=after.content)
+        await channel.send(embed=embed_logs)
+
+    @commands.Cog.listener()
+    async def on_message_delete(self, message: nextcord.Message):
+        channel: nextcord.TextChannel = await self.get_channel(message=message)
+
+        if not channel:
+            return
+
+        embed_logs = EmbedMessage(
+            message=message,
+            bot=self.bot,
+            color=nextcord.Color.orange(),
+            description=""
+        )
+        embed_logs.title = "Neuer Log"
+        embed_logs.add_field(name=f"Nachricht gelöscht in {message.channel.mention}:", value=message.content, inline=False)
         await channel.send(embed=embed_logs)
 
 
