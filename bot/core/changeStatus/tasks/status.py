@@ -8,7 +8,15 @@ class Status(commands.Cog):
         self.bot = bot
 
     @tasks.loop(seconds=30)
-    async def status(self):
+    async def status(self) -> None:
+
+        """
+        Attributes
+        ----------
+        :return: None
+        ----------
+        """
+
         await self.bot.change_presence(
             activity=nextcord.Game("mit Ulti's ASMR."),
             status=nextcord.Status.do_not_disturb
@@ -21,6 +29,14 @@ class Status(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
+
+        """
+        Attributes
+        ----------
+        :return: None
+        ----------
+        """
+
         self.status.start()
         print("Status started")
 
