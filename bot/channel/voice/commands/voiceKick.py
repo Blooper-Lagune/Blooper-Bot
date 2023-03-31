@@ -3,16 +3,16 @@ from nextcord.ext import commands
 from src.handler.voiceHandler import VoiceHandler
 
 
-class VoiceBan(commands.Cog):
+class VoiceKick(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @nextcord.slash_command(
-        name="voice-ban",
-        description="Banne einen User von deinen Voice channel.",
+        name="voice-kick",
+        description="Kicke einen user aus deinem Voice",
         force_global=True
     )
-    async def voice_ban(self, ctx: nextcord.Interaction, user: nextcord.Member):
+    async def voice_kick(self, ctx: nextcord.Interaction, user: nextcord.Member):
         if ctx.user.voice is None:
             return await ctx.send("Du bist in keinem Voice channel.", ephemeral=True)
 
@@ -25,9 +25,8 @@ class VoiceBan(commands.Cog):
             if channel == user.voice.channel:
                 await user.disconnect()
 
-        await channel.set_permissions(target=user, view_channel=False)
-        await ctx.send(f"Der User **{user.name}** wurde vom channel gebannt.", ephemeral=True)
+        await ctx.send(f"Der User **{user.name}** wurde gekickt.", ephemeral=True)
 
 
 def setup(bot):
-    bot.add_cog(VoiceBan(bot))
+    bot.add_cog(VoiceKick(bot))
