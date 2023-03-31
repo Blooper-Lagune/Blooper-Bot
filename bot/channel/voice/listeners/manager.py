@@ -14,8 +14,7 @@ class VoiceManager(commands.Cog):
     @commands.Cog.listener()
     async def on_voice_state_update(
             self,
-            member:
-            nextcord.Member,
+            member: nextcord.Member,
             before: nextcord.VoiceState,
             after: nextcord.VoiceState
     ) -> None:
