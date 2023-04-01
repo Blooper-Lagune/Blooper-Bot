@@ -1,6 +1,7 @@
 import nextcord
 from nextcord.ext import commands, tasks
 import asyncio
+from src.logger.logger import Logger
 
 
 class Status(commands.Cog):
@@ -38,7 +39,7 @@ class Status(commands.Cog):
         """
 
         self.status.start()
-        print("Status started")
+        Logger().info("Status started")
 
 
 def setup(bot):
