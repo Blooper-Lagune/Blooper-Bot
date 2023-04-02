@@ -1,6 +1,7 @@
 import nextcord
 from nextcord.ext import commands
 from src.templates import embeds
+from src.logger.logger import Logger
 
 
 class Ping(commands.Cog):
@@ -16,6 +17,8 @@ class Ping(commands.Cog):
             self,
             ctx: nextcord.Interaction
     ) -> None:
+
+        Logger().info(f"Execute Ping command by {ctx.user.name}")
 
         """
         Attributes
