@@ -28,7 +28,7 @@ class Blooper(commands.Bot):
 
                 self.load_extension(os.path.join(root, name).replace("/", ".")[:-3])
 
-        Logger().info("All Cogs loaded")
+        Logger().info("All cogs loaded")
 
         # run the bot
         self.run(self.__token)
