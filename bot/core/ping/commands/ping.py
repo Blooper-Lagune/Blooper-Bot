@@ -18,7 +18,7 @@ class Ping(commands.Cog):
             ctx: nextcord.Interaction
     ) -> None:
 
-        Logger().info(f"Execute Ping command by {ctx.user.name}")
+        Logger().info(f"Execute Ping command by {ctx.user}")
 
         """
         Attributes
