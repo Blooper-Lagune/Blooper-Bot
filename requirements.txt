@@ -1,4 +1,4 @@
 nextcord
 mysql-connector-python
 pillow
-termcolor
+colorama

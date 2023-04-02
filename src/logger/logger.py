@@ -1,4 +1,4 @@
-from termcolor import cprint, colored
+from colorama import Fore, Style
 import datetime
 
 
@@ -7,10 +7,10 @@ class Logger:
         self.now = datetime.datetime.now()
 
     def info(self, msg: str):
-        cprint(f"[{datetime.date.today()}] [{self.now.strftime('%H:%M:%S')}] [info]> {msg}", "green")
+        print(f"[{datetime.date.today()}] [{self.now.strftime('%H:%M:%S')}]" + Fore.GREEN + f" [info]> {msg}" + Style.RESET_ALL)
 
     def warn(self, msg: str):
-        cprint(f"[{datetime.date.today()}] [{self.now.strftime('%H:%M:%S')}] [warn]> {msg}", "yellow")
+        print(f"[{datetime.date.today()}] [{self.now.strftime('%H:%M:%S')}]" + Fore.YELLOW + f" [warn]> {msg}" + Style.RESET_ALL)
 
     def error(self, msg: str, error):
-        cprint(f"[{datetime.date.today()}] [{self.now.strftime('%H:%M:%S')}] [error]> {msg}", "red")
+        print(Fore.RED + f"[{datetime.date.today()}] [{self.now.strftime('%H:%M:%S')}]" + Fore.RED + f" [error]> {msg}" + Style.RESET_ALL)
